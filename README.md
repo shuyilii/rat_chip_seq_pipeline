@@ -1,5 +1,5 @@
-# Rat ChIP-Seq Pipeline
-* Raw data is in /ludc/Raw_Data_Archive/Sequencing/Chip_Seq/ChIP_Amaya/Raw_Content/raw_data
+# Rat ChIP-Seq Pipeline  
+Raw data is in /ludc/Raw_Data_Archive/Sequencing/Chip_Seq/ChIP_Amaya/Raw_Content/raw_data
 ## 1.raw data possessing
 *change base call files to fastq files*
 * program: bcl2fastq (v2.20.0.422)
