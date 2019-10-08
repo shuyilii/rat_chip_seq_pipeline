@@ -38,10 +38,21 @@ bwa mem -t 8 -M ref_genome.fa $R1.fastq $R2.fastq > $sam
 samtools view -h -b -S -o $bam $sam
 
 ## 4.Post-alignment filtering
-* program(s): 
+* program(s): samtools (v1.9); Picard - MarkDuplicates(v2.20.5)
+* input:
 
 ## 5.Peak calling
+* program(s): macs2 (v2.2.4)
+* input:
 
 ## 6.ChIPQC
+* program(s): R package - ChIPQC(1.21.0)
 
 ## 7.Handling-replicates
+* program(s): Bedtools (v2.28.0); bash
+
+## 8.Peak annotation
+* program(s): homer - annotatePeaks.pl(v4.10.4); R package - ChIPseeker(v1.20.0); clusterProfiler(v3.12.0)
+
+## 9.Plot
+* program(s): R package - ChIPQC(v1.21.0); ChIPseeker(v1.20.0)
