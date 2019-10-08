@@ -23,14 +23,22 @@ ls \*.fastq.gz | while read file; do gunzip $file; done
 * input: $fastq
 * output: QC_result_dir
 * commands:  
-ls \*.fastq | while read file ; do fastqc -t 6 $file ; echo $file processed ; done
+ls \*.fastq | while read file ; do fastqc -t 6 $file ; echo $file processed ; done  
 multiqc .
 
 ## 3.Read alignment
-* program(s): BWA (v0.7.13)
-* input:
+* program(s): BWA (v0.7.13); samtools (v1.9)
+* input:  
+reference genome - Rattus norvegicus (Rat) Emsemble Rnor_6.0 (http://igenomes.illumina.com.s3-website-us-east-1.amazonaws.com/Rattus_norvegicus/Ensembl/Rnor_6.0/Rattus_norvegicus_Ensembl_Rnor_6.0.tar.gz)  
+$R1.fastq $R2.fastq
+* output:
+$bam
+* commands:  
+bwa mem -t 8 -M ref_genome.fa $R1.fastq $R2.fastq > $sam  
+samtools view -h -b -S -o $bam $sam
 
 ## 4.Post-alignment filtering
+* program(s): 
 
 ## 5.Peak calling
 
