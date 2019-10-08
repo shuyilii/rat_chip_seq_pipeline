@@ -32,14 +32,21 @@ multiqc .
 reference genome - Rattus norvegicus (Rat) Emsemble Rnor_6.0 (http://igenomes.illumina.com.s3-website-us-east-1.amazonaws.com/Rattus_norvegicus/Ensembl/Rnor_6.0/Rattus_norvegicus_Ensembl_Rnor_6.0.tar.gz)  
 $R1.fastq $R2.fastq
 * output:
-$bam
+$unfiltered_bam
 * commands:  
 bwa mem -t 8 -M ref_genome.fa $R1.fastq $R2.fastq > $sam  
-samtools view -h -b -S -o $bam $sam
+samtools view -h -b -S -o $unfiltered_bam $sam
 
 ## 4.Post-alignment filtering
 * program(s): samtools (v1.9); Picard - MarkDuplicates(v2.20.5)
-* input:
+* input: $unfiltered_bam
+* output: $filtered_bam
+* commands:  
+# Remove  unmapped, mate unmapped
+# not primary alignment, reads failing platform
+# Remove low MAPQ reads
+
+
 
 ## 5.Peak calling
 * program(s): macs2 (v2.2.4)
