@@ -38,15 +38,21 @@ bwa mem -t 8 -M ref_genome.fa $R1.fastq $R2.fastq > $sam
 samtools view -h -b -S -o $unfiltered_bam $sam
 
 ## 4.Post-alignment filtering
-* program(s): samtools (v1.9); Picard - MarkDuplicates(v2.20.5)
+* program(s): samtools (v1.9); Picard - MarkDuplicates(v2.20.5); sambamba(v0.7.0)
 * input: $unfiltered_bam
 * output: $filtered_bam
 * commands:  
-# Remove  unmapped, mate unmapped
-# not primary alignment, reads failing platform
-# Remove low MAPQ reads
-
-
+*Remove  unmapped, mate unmapped, not primary alignment, reads failing platform, low MAPQ reads*
+MAPQ_THRESH=30  
+samtools view -F 1804 -f 2 -q ${MAPQ_THRESH} -b $unfiltered_bam > $tmp_bam  
+samtools fixmate -r $tmp_bam $fil_bam
+samtools view -F 1804 -f 2 -b $fil_bam > $fil_temp_bam
+samtools sort -o $sortedPos_bam $fil_temp_bam
+*Mark duplicates*
+java -Xmx4G -jar picard.jar MarkDuplicates I=$sortedPos_bam O=$markdup_bam M=$metrics.txt VALIDATION_STRINGENCY=LENIENT ASSUME_SORTED=true REMOVE_DUPLICATES=false
+*Remove duplicates, index final position sorted BAM*
+samtools view -F 1804 -f 2 -b $markdup_bam > $unsorted_bam
+sambamba sort -t 2 -o $filtered_bam $unsorted_bam
 
 ## 5.Peak calling
 * program(s): macs2 (v2.2.4)
