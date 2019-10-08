@@ -14,8 +14,9 @@ nohup bcl2fastq --sample-sheet <sample_sheet.csv> -i <Input_dir> -o <Output_dir>
 * input: L00{1,2,3,4}_R1_fastq.bz L00{1,2,3,4}_R2_fastq.bz
 * output: R1.fastq R2.fastq
 * commands:  
-cat <(find *_R1*fastq.gz | sort | paste - - - -) <(find *R2*fastq.gz | sort | paste - - - -) | sort | gawk '{ print "cat",$1,$2,$3,$4,">",gensub(/_L001_(R[12])_001/, "_\\1", "g", $1);}'| sh
-
-ls *.fastq.gz | while read file; do gunzip $file; done
+cat <(find \*_R1\*fastq.gz | sort | paste - - - -) <(find \*R2\*fastq.gz | sort | paste - - - -) | sort | gawk '{ print "cat",$1,$2,$3,$4,">",gensub(/_L001_(R[12])_001/, "_\\1", "g", $1);}'| sh  
+ls \*.fastq.gz | while read file; do gunzip $file; done
 
 ## 2.Quality control
+* program: fastqc (v0.11.8)
+* 
