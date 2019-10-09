@@ -77,22 +77,22 @@ ChIPQCreport(chipObj, reportName = "Chip QC report", reportFolder = "ChIPQCrepor
 * program(s): Bedtools (v2.28.0); bash
 * input: $bed $narrowPeak
 * output: $merged_bed
-* commands:  
-bedtools merge -a Glu_9IP_peaks.narrowPeak -b Glu_10IP_peaks.narrowPeak -wo > Glu-merge.bed (for example)  
+* commands:
+(for example)  
+bedtools merge -a Glu_9IP_peaks.narrowPeak -b Glu_10IP_peaks.narrowPeak -wo > Glu_merged.bed
 or  
-cat 9IP_summits.bed 10IP_summits.bed > Glu_merged.bed (for example)
+cat 9IP_summits.bed 10IP_summits.bed > Glu_merged.bed
 
 ## 8.Peak annotation
 * program(s): homer - annotatePeaks.pl(v4.10.4); R package - ChIPseeker(v1.20.0); clusterProfiler(v3.12.0) (installation: BiocManager::install("ChIPseeker"), BiocManager::install("clusterProfiler"))
 * input: $merged_bed  
-ref_genes.gtf - Rattus norvegicus (Rat) Emsemble Rnor_6.0
+ref_genes.gtf - Rattus norvegicus (Rat) Emsemble Rnor_6.0  
 R: TxDb.Rnorvegicus.UCSC.rn6.refGene (BiocManager::install("TxDb.Rnorvegicus.UCSC.rn6.refGene"))
 * output: $anno_txt; plots
 * commands:  
 ***annotation***  
 annotatePeaks.pl $merged_bed rn6 -gtf ref_genes.gtf > $anno_txt  
-***plotting***
-(for example)  
+***plotting(for example)***
 control<- readPeakFile("control_merged.bed")  
 covplot(control, weightCol="V5", title = "ChIP Peaks over Chromosomes of Control Samples")  
 peakAnnoControl <- annotatePeak(control, tssRegion = c(-3000,3000), TxDb=txdb)  
