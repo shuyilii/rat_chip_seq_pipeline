@@ -62,8 +62,7 @@ sambamba sort -t 2 -o $filtered_bam $unsorted_bam
 
 ## 6.ChIPQC
 * program(s): R package - ChIPQC(1.21.0) (installation: BiocManager::install("ChIPQC"))
-* input: sample.csv  
-- The sample sheet contains metadata information for our dataset. Each row represents a peak set (which in most cases is every ChIP sample) and several columns of required information, which allows us to easily load the associated data in one single command. NOTE: The column headers have specific names that are expected by ChIPQC.  
+* input: sample.csv - The sample sheet contains metadata information for our dataset. Each row represents a peak set (which in most cases is every ChIP sample) and several columns of required information, which allows us to easily load the associated data in one single command. NOTE: The column headers have specific names that are expected by ChIPQC.  
 $narrowPeak (the path to which is specified in sample.csv)
 * output: ChIPQC report (Chip QC report.html)
 * commands:  
