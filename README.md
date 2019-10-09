@@ -56,16 +56,28 @@ sambamba sort -t 2 -o $filtered_bam $unsorted_bam
 
 ## 5.Peak calling
 * program(s): macs2 (v2.2.4)
-* input:
+* input: $IP_filtered_bam $INPUT_filtered_bam
+* output: $bed $xls $narrowPeak
+* commands: macs2 callpeak -t $IP_filtered_bam -c $INPUT_filtered_bam -f BAMPE -g 2.3e+9 -p 0.001 -n <IP_name> --outdir <out_dir> 2>$log
 
 ## 6.ChIPQC
-* program(s): R package - ChIPQC(1.21.0)
+* program(s): R package - ChIPQC(1.21.0) (installation: BiocManager::install("ChIPQC"))
+* input: sample.csv  
+- The sample sheet contains metadata information for our dataset. Each row represents a peak set (which in most cases is every ChIP sample) and several columns of required information, which allows us to easily load the associated data in one single command. NOTE: The column headers have specific names that are expected by ChIPQC.  
+$narrowPeak (the path to which is specified in sample.csv)
+* output: ChIPQC report (Chip QC report.html)
+* commands:  
+library(ChIPQC)  
+samples <- read.csv(file="meta/sample.csv",header=TRUE,sep=",")  
+chipObj <- ChIPQC(samples, annotation = "rn4")  
+#####register(SerialParam())  
+ChIPQCreport(chipObj, reportName = "Chip QC report", reportFolder = "ChIPQCreport")
 
 ## 7.Handling-replicates
 * program(s): Bedtools (v2.28.0); bash
 
 ## 8.Peak annotation
 * program(s): homer - annotatePeaks.pl(v4.10.4); R package - ChIPseeker(v1.20.0); clusterProfiler(v3.12.0)
-
+* commands: annotatePeaks.pl $bed rn6 -gtf /ludc/Reference_Data/Public/Rat/Ensembl_DNA/Rnor_6.0/Annotation/Genes/genes.gtf > control_1IP.txt
 ## 9.Plot
 * program(s): R package - ChIPQC(v1.21.0); ChIPseeker(v1.20.0)
