@@ -92,7 +92,7 @@ R: TxDb.Rnorvegicus.UCSC.rn6.refGene (BiocManager::install("TxDb.Rnorvegicus.UCS
 * commands:  
 ***annotation***  
 annotatePeaks.pl $merged_bed rn6 -gtf ref_genes.gtf > $anno_txt  
-***plotting(for example)***
+***plotting(for example)***  
 control<- readPeakFile("control_merged.bed")  
 covplot(control, weightCol="V5", title = "ChIP Peaks over Chromosomes of Control Samples")  
 peakAnnoControl <- annotatePeak(control, tssRegion = c(-3000,3000), TxDb=txdb)  
