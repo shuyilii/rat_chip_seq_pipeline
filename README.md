@@ -1,6 +1,7 @@
 # Rat ChIP-Seq Pipeline
 Raw data is in /ludc/Raw_Data_Archive/Sequencing/Chip_Seq/ChIP_Amaya/Raw_Content/raw_data.
 You can always check the pipeline on https://github.com/shuyilii/rat_chip_seq_pipeline
+
 ## 1.Raw data possessing
 ***change base call files to fastq files***
 * program(s): bcl2fastq (v2.20.0.422)
@@ -61,7 +62,7 @@ sambamba sort -t 2 -o $filtered_bam $unsorted_bam
 * commands: macs2 callpeak -t $IP_filtered_bam -c $INPUT_filtered_bam -f BAMPE -g 2.3e+9 -p 0.001 -n <IP_name> --outdir <out_dir> 2>$log
 
 ## 6.ChIPQC
-* program(s): R package - ChIPQC(1.21.0) (installation: BiocManager::install("ChIPQC"))
+* program(s): R package - ChIPQC(1.21.0) (installation: BiocManager::install("ChIPQC") and maybe also install_github("shengqh/ChIPQC") due to some weirrrrd bugs)
 * input: sample.csv - The sample sheet contains metadata information for our dataset. Each row represents a peak set (which in most cases is every ChIP sample) and several columns of required information, which allows us to easily load the associated data in one single command. NOTE: The column headers have specific names that are expected by ChIPQC.  
 $narrowPeak (the path to which is specified in sample.csv)
 * output: ChIPQC report (Chip QC report.html)
@@ -74,9 +75,27 @@ ChIPQCreport(chipObj, reportName = "Chip QC report", reportFolder = "ChIPQCrepor
 
 ## 7.Handling-replicates
 * program(s): Bedtools (v2.28.0); bash
+* input: $bed $narrowPeak
+* output: $merged_bed
+* commands:  
+bedtools merge -a Glu_9IP_peaks.narrowPeak -b Glu_10IP_peaks.narrowPeak -wo > Glu-merge.bed (for example)  
+or  
+cat 9IP_summits.bed 10IP_summits.bed > Glu_merged.bed (for example)
 
 ## 8.Peak annotation
-* program(s): homer - annotatePeaks.pl(v4.10.4); R package - ChIPseeker(v1.20.0); clusterProfiler(v3.12.0)
-* commands: annotatePeaks.pl $bed rn6 -gtf /ludc/Reference_Data/Public/Rat/Ensembl_DNA/Rnor_6.0/Annotation/Genes/genes.gtf > control_1IP.txt
-## 9.Plot
-* program(s): R package - ChIPQC(v1.21.0); ChIPseeker(v1.20.0)
+* program(s): homer - annotatePeaks.pl(v4.10.4); R package - ChIPseeker(v1.20.0); clusterProfiler(v3.12.0) (installation: BiocManager::install("ChIPseeker"), BiocManager::install("clusterProfiler"))
+* input: $merged_bed  
+ref_genes.gtf - Rattus norvegicus (Rat) Emsemble Rnor_6.0
+R: TxDb.Rnorvegicus.UCSC.rn6.refGene (BiocManager::install("TxDb.Rnorvegicus.UCSC.rn6.refGene"))
+* output: $anno_txt; plots
+* commands:  
+***annotation***  
+annotatePeaks.pl $merged_bed rn6 -gtf ref_genes.gtf > $anno_txt  
+***plotting***
+(for example)  
+control<- readPeakFile("control_merged.bed")  
+covplot(control, weightCol="V5", title = "ChIP Peaks over Chromosomes of Control Samples")  
+peakAnnoControl <- annotatePeak(control, tssRegion = c(-3000,3000), TxDb=txdb)  
+plotAnnoPie(peakAnnoControl)  
+vennpie(peakAnnoControl)  
+plotDistToTSS(peakAnnoControl)  
