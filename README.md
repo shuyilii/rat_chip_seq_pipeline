@@ -56,7 +56,7 @@ samtools view -F 1804 -f 2 -b $markdup_bam > $unsorted_bam
 sambamba sort -t 2 -o $filtered_bam $unsorted_bam
 
 ## 5.Peak calling
-* program(s): macs2 (v2.2.4)
+* program(s): macs2 (v2.1.3.3)
 * input: $IP_filtered_bam $INPUT_filtered_bam
 * output: $bed $xls $narrowPeak
 * commands: macs2 callpeak -t $IP_filtered_bam -c $INPUT_filtered_bam -f BAMPE -g 2.3e+9 -p 0.001 -n <IP_name> --outdir <out_dir> 2>$log
