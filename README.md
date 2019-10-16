@@ -79,7 +79,7 @@ ChIPQCreport(chipObj, reportName = "Chip QC report", reportFolder = "ChIPQCrepor
 * output: $merged_bed
 * commands:
 (for example)  
-bedtools merge -a Glu_9IP_peaks.narrowPeak -b Glu_10IP_peaks.narrowPeak -wo > Glu_merged.bed
+bedtools merge -a Glu_9IP_peaks.narrowPeak -b Glu_10IP_peaks.narrowPeak -wo > Glu_merged.bed  
 or  
 cat 9IP_summits.bed 10IP_summits.bed > Glu_merged.bed
 
