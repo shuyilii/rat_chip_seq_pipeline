@@ -102,6 +102,8 @@ plotDistToTSS(peakAnnoControl)
 
 ## 9.Motif analysis
 * program(s): awk; homer - findMotifsGenome.pl(v4.10.4)
-* input:
-* output:
-* commands:
+* input: $merged_bed
+* output: motif_analysis_dir (html report)
+* commands:  
+awk '{print $4"\tchr"$1"\t"$2"\t"$3"\t+"}' $merged_bed > $homer_bed  
+findMotifsGenome.pl $homer_bed rn6 <motif_analysis_dir>
