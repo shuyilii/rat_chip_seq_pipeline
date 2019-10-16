@@ -99,3 +99,9 @@ peakAnnoControl <- annotatePeak(control, tssRegion = c(-3000,3000), TxDb=txdb)
 plotAnnoPie(peakAnnoControl)  
 vennpie(peakAnnoControl)  
 plotDistToTSS(peakAnnoControl)  
+
+## 9.Motif analysis
+* program(s): awk; homer - findMotifsGenome.pl(v4.10.4)
+* input:
+* output:
+* commands:
